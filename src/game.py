@@ -4,7 +4,6 @@ from random import randrange
 
 import eval7
 
-# from .hand import HandUI
 from .clients import HumanClient, BotClient
 from .hand import Hand
 
