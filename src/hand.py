@@ -25,6 +25,10 @@ class Hand(LoggerMixin):
         self.is_over = False
         self.clients = [client(cards) for client, cards in zip(self.clients, self.cards)]
 
+        print('Board:', self.board)
+        print('Pot:', self.pot)
+        print()
+
     def _init_cards(self):
         self.cards = [None, None]
         for _ in range(10):
