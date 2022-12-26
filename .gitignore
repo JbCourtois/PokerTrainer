@@ -8,3 +8,6 @@ local_settings.py
 
 venv
 .env
+
+/Spots/*
+!/Spots/README.md
