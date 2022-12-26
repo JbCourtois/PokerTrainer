@@ -6,6 +6,7 @@ import eval7
 
 # from .hand import HandUI
 from .clients import HumanClient, BotClient
+from .hand import Hand
 
 
 def parse_range(raw):
@@ -49,3 +50,9 @@ class Game:
             self.ranges[1] = parse_range(rest[0])
         elif header == 'set_range_ip':
             self.ranges[0] = parse_range(rest[0])
+
+    def run(self):
+        while True:
+            hand = Hand(self)
+            hand.play()
+            self.clients.rotate(1)
