@@ -27,10 +27,10 @@ class Game:
         self.clients.rotate(randrange(2))
         self.ranges = [None, None]
 
-        with open(parameters) as file:
+        with open(parameters, encoding='utf8') as file:
             self.parse_parameters(file)
 
-        with open(strategy) as file:
+        with open(strategy, encoding='utf8') as file:
             self.tree = json.load(file)
 
     def parse_parameters(self, stream):

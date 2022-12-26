@@ -7,6 +7,7 @@ from .cards import Card, CardSet
 class Client(metaclass=ABCMeta):
     name = 'BaseClient'
 
+    @abstractmethod
     def __init__(self, cards):
         pass
 
@@ -37,6 +38,7 @@ class HumanClient(Client):
             except (ValueError, IndexError):
                 pass
 
+
 class BotClient(Client):
     name = 'Bot'
 
@@ -45,6 +47,7 @@ class BotClient(Client):
 
     def get_action(self, strategy):
         roll = random()
+        index = 0
         for index, weight in enumerate(strategy['strategy'][self.cards]):
             if roll <= weight:
                 break

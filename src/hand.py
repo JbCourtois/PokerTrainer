@@ -5,8 +5,8 @@ from .cards import Card, CardSet
 
 class LoggerMixin:
     def __init__(self, *args, logger=None, **kwargs):
-        self.logger = logger
         super().__init__(*args, **kwargs)
+        self.logger = logger
 
     def log(self, *args, **kwargs):
         print(*args, **kwargs, file=self.logger)
@@ -14,6 +14,7 @@ class LoggerMixin:
 
 class Hand(LoggerMixin):
     def __init__(self, game):
+        super().__init__()
         self.__dict__.update(game.__dict__)
 
         dead_raws = self.board.split(',')

@@ -17,7 +17,7 @@ class TestGame(TestCase):
         path = base_path + '/fixtures/sample_hand'
         seed(40)
 
-        cls.game = Game(path + '/parameters.txt', path + '/strategy.json')
+        cls.game = Game(path + '/output_parameters.txt', path + '/output_strategy.json')
         cls.hand = Hand(cls.game)
 
     @patch('src.clients.input')
