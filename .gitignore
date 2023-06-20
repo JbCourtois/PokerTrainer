@@ -1,9 +1,18 @@
 __pycache__
 *.pyc
 .DS_Store
+/*.bat
 
 local
 local_settings.py
 
 venv
 .env
+
+/rust/target
+/rust/*.lock
+
+/rust/result.txt
+/rust/src/main.rs
+
+/Spots/**/*.txt
