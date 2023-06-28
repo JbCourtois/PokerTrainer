@@ -59,6 +59,8 @@ impl<'a> Exporter<'a> {
     }
 
     pub fn export_init(&mut self) {
+        self.print([0, 1], 0);  // Player positions
+
         let tree_config = self.game.tree_config();
         self.print([tree_config.starting_pot, tree_config.effective_stack], 0);
 

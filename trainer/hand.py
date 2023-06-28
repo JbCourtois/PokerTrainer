@@ -4,25 +4,16 @@ from random import random, shuffle
 from tabulate import tabulate
 
 from .cards import Card, CardSet
-
-
-class LoggerMixin:
-    # pylint: disable = too-few-public-methods
-    def __init__(self, *args, logger=None, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.logger = logger
-
-    def log(self, *args, **kwargs):
-        print(*args, **kwargs, file=self.logger)
+from .logger import LoggerMixin
 
 
 class Hand(LoggerMixin):
-    PLAYER_ID = 0
     CHANCE_ID = 2
 
-    def __init__(self, game, *args, **kwargs):
+    def __init__(self, game, human_id, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
+        self.human_id = human_id
         self.node = game.tree
         self._init_cards(game.ranges)
         self.board = CardSet.from_cards(game.board)
@@ -54,9 +45,10 @@ class Hand(LoggerMixin):
         ip_hole = [ip_hole[:2], ip_hole[2:]]
         self.dead_raws.update(ip_hole)
 
-        self.player_hole = CardSet.from_cards(oop_hole)
-        self.ip_hole = CardSet.from_cards(ip_hole)
-
+        self.holes = [
+            CardSet.from_cards(oop_hole),
+            CardSet.from_cards(ip_hole),
+        ]
         self.holes_index = [oop_index, ip_index]
 
     def play(self):
@@ -80,7 +72,7 @@ class Hand(LoggerMixin):
         strategy, evs = self.crop_tables(player_id, rest)
         actions = list(children)
 
-        if player_id == self.PLAYER_ID:
+        if player_id == self.human_id:
             self.refresh()
 
             table = [
@@ -114,20 +106,6 @@ class Hand(LoggerMixin):
             for table in tables
         ]
 
-    def ask_action(self, actions):
-        self.log()
-        self.log('Choices:')
-        for index, action in enumerate(actions):
-            self.log(f'{index}: {action}')
-        self.log()
-
-        while True:
-            try:
-                index = int(input('Your action? '))
-                return actions[index]
-            except (ValueError, IndexError):
-                pass
-
     def deal(self, raw):
         """Add a card to the board."""
         card = Card.from_raw(raw)
@@ -141,7 +119,7 @@ class Hand(LoggerMixin):
         else:
             os.system('cls')
 
-        self.log('Hole:', self.player_hole)
+        self.log('Hole:', self.holes[self.human_id])
 
         for line in self.info:
             self.log(line)
@@ -156,6 +134,6 @@ class Hand(LoggerMixin):
             self.log(line)
 
         self.log(' '.join(self.history))
-        self.log('IP cards', self.ip_hole)
+        self.log('Vilain cards', self.holes[1 - self.human_id])
         self.log()
         _ = input('--- go to next hand ---')

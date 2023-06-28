@@ -1,10 +1,14 @@
 import json
 
 from .hand import Hand
+from .logger import LoggerMixin
 
 
-class Game:
+class Game(LoggerMixin):
     def __init__(self):
+        super().__init__()
+
+        self.human_ids = None
         self.pot = None
         self.stack = None
         self.board = None
@@ -15,9 +19,15 @@ class Game:
     def from_file(filename):
         return TreeParser(filename).game
 
-    def run(self):
+    def run(self, human_id=None):
+        if human_id is None and len(self.human_ids) >= 2:
+            self.log("This game can be played as either player.")
+            human_id = self.ask_action(["OOP", "IP"], return_index=True)
+        else:
+            human_id = self.human_ids[0]
+
         while True:
-            hand = Hand(self)
+            hand = Hand(self, human_id)
             hand.play()
 
 
@@ -32,6 +42,7 @@ class TreeParser:
             self.game.tree = self.parse_node()
 
     def parse_headers(self):
+        self.game.human_ids = self._read()
         self.game.pot, self.game.stack = self._read()
         self.game.board = self._read().split(',')
         self.game.ranges = [self._read() for _ in range(2)]
