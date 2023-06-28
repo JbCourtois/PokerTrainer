@@ -1,0 +1,11 @@
+[MESSAGES CONTROL]
+
+disable=
+    missing-function-docstring,
+    missing-module-docstring,
+    missing-class-docstring,
+
+
+[DESIGN]
+
+max-attributes=20

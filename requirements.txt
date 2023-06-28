@@ -1,2 +1,4 @@
 termcolor
 colorama
+
+tabulate
