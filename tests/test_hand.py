@@ -38,7 +38,7 @@ class TestGame(TestCase):
         seed(50)
         mock_input.side_effect = [1] * 1000
 
-        logger = StringIO()
+        logger = StringIO(encoding='utf8')
         game = Game.from_file(base_path + '/fixtures/toy_game_AKK7.txt')
         hand = Hand(game, 1, logger=logger)
         hand.play()
