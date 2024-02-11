@@ -1,5 +1,6 @@
 from collections import UserList, UserString
 from typing import NamedTuple
+from dataclasses import dataclass
 from random import shuffle
 
 from termcolor import colored
@@ -36,7 +37,8 @@ RANKS = [Rank(rank) for rank in [
 RANKS_MAP = {str(rank): rank for rank in RANKS}
 
 
-class Suit(IndexableMixin, NamedTuple):
+@dataclass
+class Suit(IndexableMixin):
     letter: str
     symbol: str
     color: str
