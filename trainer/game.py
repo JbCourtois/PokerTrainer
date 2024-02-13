@@ -4,6 +4,21 @@ from .hand import Hand
 from .logger import LoggerMixin
 
 
+class Tree(list):
+    """List with 2 or more elements.
+
+    0: Player id (0=OOP | 1=IP | 5=Luck)
+    1: Children as a dict {label: subtree}
+
+    Plus, if node belonds to a player:
+    2: Action frequencies
+    3: Action EVs
+    """
+
+    def __repr__(self):
+        return f'Tree(Player {self[0]}, {len(self[1])} children)'
+
+
 class Game(LoggerMixin):
     def __init__(self):
         super().__init__()
@@ -47,13 +62,13 @@ class TreeParser:
         self.game.board = self._read().split(',')
         self.game.ranges = [self._read() for _ in range(2)]
 
-    def parse_node(self, level=0):
+    def parse_node(self, level=0) -> Tree:
         if not self._peek().startswith('\t' * level):
             return None
 
         player_id = self._consume()
         children = {}
-        node = [player_id, children]
+        node = Tree([player_id, children])
 
         if player_id <= 1:
             # Weights + EVs
